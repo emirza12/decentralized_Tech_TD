@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Titanic Prediction API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .endpoint {
+            background-color: #f5f5f5;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .form-group {
+            margin: 10px 0;
+        }
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 20px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>Titanic Prediction API</h1>
+    
+    <div class="endpoint">
+        <h2>Single Model Prediction</h2>
+        <form id="predictForm">
+            <div class="form-group">
+                <label>Model:</label>
+                <select name="model">
+                    <option value="logistic">Logistic Regression</option>
+                    <option value="decision">Decision Tree</option>
+                    <option value="random">Random Forest</option>
+                    <option value="svm">SVM</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Class:</label>
+                <input type="number" name="pclass" min="1" max="3" value="3">
+            </div>
+            <div class="form-group">
+                <label>Sex:</label>
+                <select name="sex">
+                    <option value="0">Male</option>
+                    <option value="1">Female</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Age:</label>
+                <input type="number" name="age" step="0.1" value="25">
+            </div>
+            <div class="form-group">
+                <label>Fare:</label>
+                <input type="number" name="fare" step="0.01" value="7.25">
+            </div>
+            <button type="button" onclick="predict('predict')">Predict</button>
+        </form>
+    </div>
+
+    <div class="endpoint">
+        <h2>Consensus Prediction</h2>
+        <form id="consensusForm">
+            <div class="form-group">
+                <label>Class:</label>
+                <input type="number" name="pclass" min="1" max="3" value="3">
+            </div>
+            <div class="form-group">
+                <label>Sex:</label>
+                <select name="sex">
+                    <option value="0">Male</option>
+                    <option value="1">Female</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Age:</label>
+                <input type="number" name="age" step="0.1" value="25">
+            </div>
+            <div class="form-group">
+                <label>Fare:</label>
+                <input type="number" name="fare" step="0.01" value="7.25">
+            </div>
+            <button type="button" onclick="predict('predict_consensus')">Predict Consensus</button>
+        </form>
+    </div>
+
+    <div class="endpoint">
+        <h2>System Management</h2>
+        <button onclick="resetSystem()">Reset System</button>
+    </div>
+
+    <div id="result"></div>
+
+    <script>
+        function predict(endpoint) {
+            const form = endpoint === 'predict' ? 'predictForm' : 'consensusForm';
+            const formData = new FormData(document.getElementById(form));
+            const params = new URLSearchParams(formData);
+            
+            fetch(`/${endpoint}?${params.toString()}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    document.getElementById('result').textContent = 'Error: ' + error;
+                });
+        }
+
+        function resetSystem() {
+            fetch('/reset', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+                    alert('System reset successfully!');
+                })
+                .catch(error => {
+                    document.getElementById('result').textContent = 'Error: ' + error;
+                });
+        }
+    </script>
+</body>
+</html> 

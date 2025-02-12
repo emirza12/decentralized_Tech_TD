@@ -1,0 +1,1 @@
+{"logistic": {"balance": 1000, "total_predictions": 3, "incorrect_predictions": 0}, "decision": {"balance": 1000, "total_predictions": 3, "incorrect_predictions": 0}, "random": {"balance": 1000, "total_predictions": 3, "incorrect_predictions": 0}, "svm": {"balance": 1000, "total_predictions": 3, "incorrect_predictions": 0}}
