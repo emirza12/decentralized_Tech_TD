@@ -1,0 +1,21 @@
+node_modules/
+.env
+package-lock.json
+
+# Environment files
+.env
+**/ .env
+.env.*
+!.env.example
+
+# Logs
+logs
+*.log
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
